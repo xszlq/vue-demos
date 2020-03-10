@@ -31,3 +31,6 @@ npm run lint
 - 列表循环（v-for）
 - 跨组件如何通信？props方式和react类似
 - 使用vuex解决组件状态同步问题
+
+
+## 自己实现的可复用组件
