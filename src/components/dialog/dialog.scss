@@ -1,0 +1,46 @@
+$fixSpace: 16px;
+
+.head-pop{
+  .header{
+    width: 400px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #EDEDED;
+    padding: 0 $fixSpace;
+
+    .title{
+      font-size:14px;
+    }
+  }
+
+  .footer{
+    display: flex;
+    justify-content: flex-end;
+    padding: $fixSpace;
+
+    .head-btn{
+      width: 40px;
+      height: 20px;
+      border-radius:2px;
+      font-size: 12px;
+    }
+
+    .cancel{
+      background:rgba(255,255,255,1);
+      border:1px solid rgba(229,229,229,1);
+      color:rgba(0,0,0,1);
+      margin-right: 8px;
+      color: #000000;
+      opacity: 0.6;
+    }
+
+    .confirm{
+      color:rgba(255,255,255,1);
+      background:rgba(15,98,254,1);
+      border: none;
+    }
+  }
+
+}
