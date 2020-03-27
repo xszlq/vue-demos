@@ -8,15 +8,21 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/todo',
       name: 'todos',
       component: ()=> import('./views/Todo.vue')
     },
 
-      {
-        path: '/pop',
-          name: 'pop',
-          component: ()=> import('./views/Pop.vue')
-      }
+    {
+      path: '/pop',
+      name: 'pop',
+      component: () => import('./views/Pop.vue')
+    },
+    {
+      path: '/calendar',
+      name: 'calendar',
+      component: () => import('./views/Calendar.vue')
+    },
+
   ]
 })
