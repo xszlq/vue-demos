@@ -1,17 +1,15 @@
 <template>
     <div>
-        <full-calendar :events="fcEvents" locale="fr">
-            <template slot="fc-body-card">
-                <h3>hello</h3>
-            </template>
-        </full-calendar>
-        <div>hello world</div>
+        <full-calendar :events="fcEvents" lang="zh"/>
     </div>
 
 </template>
 
 <script>
-  import fullCalendar from 'vue-fullcalendar'
+  import fullCalendar from './calendar/fullCalendar'
+
+  // import  fullCalendar from 'vue-fullcalendar'
+
 
   var demoEvents = [
     {
@@ -22,7 +20,7 @@
     {
       title     :  'task 1',
       start     : '2020-03-10',
-      end: "2020-03-27",
+      end: "2020-04-17",
       cssClass  : 'family',
       YOUR_DATA : {}
     },
