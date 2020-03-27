@@ -17,11 +17,11 @@
       <!-- absolute so we can make dynamic td -->
       <div class="dates-events">
         <div class="events-week" v-for="week in currentDates">
-          <div class="events-day" style="position: relative;" v-for="day in week" track-by="$index"
+          <div class="events-day" v-for="day in week" track-by="$index"
             :class="{'today' : day.isToday,
               'not-cur-month' : !day.isCurMonth}" @click.stop="dayClick(day.date, $event)">
             <p class="day-number">{{day.monthDay}}</p>
-            <div style="position: absolute; background-color: red; top: 0; left: 0; width: 100%; height: 100%;" v-if="day.monthDay === 14">休息</div>
+            <div class="rest-day" v-if="day.monthDay === 14">休息</div>
 
             <div class="event-box">
               <p class="event-item" v-for="event in day.events" v-show="event.cellIndex <= eventLimit"
@@ -303,11 +303,22 @@
       .events-week{
         display: flex;
         .events-day{
+          position: relative;
           cursor: pointer;
           flex:1;
           min-height: 109px;
           overflow: hidden;
           text-overflow: ellipsis;
+
+          .rest-day{
+            position: absolute;
+            background-color: red;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
           .day-number{
             text-align: right;
             padding:4px 5px 4px 4px;
