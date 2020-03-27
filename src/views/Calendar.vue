@@ -14,8 +14,18 @@
   var demoEvents = [
     {
       title : 'Sunny Out of Office',
-      start : '2016-08-25',
-      end : '2017-07-27'
+      start : '2020-03-12',
+      end : '2020-03-12'
+    },
+    {
+      title : 'task 3',
+      start : '2020-03-12',
+      end : '2020-03-12'
+    },
+    {
+      title : 'task 4',
+      start : '2020-03-12',
+      end : '2020-03-12'
     },
     {
       title     :  'task 1',
