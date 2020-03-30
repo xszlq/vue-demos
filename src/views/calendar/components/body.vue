@@ -11,11 +11,9 @@
               'not-cur-month' : !day.isCurMonth}">
             <p class="day-number">{{day.monthDay}}</p>
 
-            <div class="day-warn" v-if="day.monthDay === 10">
-              <button>warn</button>
+            <div class="rest-day" v-if="day.weekDay === 0 || day.weekDay === 6">
+              <p class="day-number">{{day.monthDay}}</p>
             </div>
-
-            <div class="rest-day" v-if="day.weekDay === 0 || day.weekDay === 6">休</div>
           </div>
         </div>
       </div>
@@ -27,6 +25,10 @@
             :class="{'today' : day.isToday,
               'not-cur-month' : !day.isCurMonth}" @click.stop="dayClick(day.date, $event)">
             <p class="day-number">{{day.monthDay}}</p>
+
+            <div class="day-warn" v-if="day.monthDay === 10">
+              <button @click="handleShowWarn(day, $event)">warn</button>
+            </div>
 
             <div class="event-box">
               <p class="event-item" v-for="event in day.events" v-show="event.cellIndex <= eventLimit"
@@ -66,6 +68,18 @@
         </div>
       </div>
 
+      <div class="more-events" v-show="showWarn"
+           :style="{left: warnPos.left + 'px', top: warnPos.top + 'px'}">
+        <div class="more-header">
+          <span class="title">{{moreTitle(warnDay.date)}}</span>
+          <span class="close" @click.stop="showWarn = false">x</span>
+        </div>
+        <div class="more-body" style="height: 50px; background-color: white;">
+          <div>当日无任务安排</div>
+          <button>调整工时</button>
+        </div>
+      </div>
+
       <slot name="body-card">
 
       </slot>
@@ -102,11 +116,17 @@
         isLismit : true,
         eventLimit : 3,
         showMore : false,
+        showWarn: false,
         morePos : {
           top: 0,
           left : 0
         },
-        selectDay : {}
+        selectDay : {},
+        warnDay: {},
+        warnPos: {
+          top: 0,
+          left : 0,
+        }
       }
     },
     watch : {
@@ -261,6 +281,13 @@
         jsEvent.stopPropagation()
         let pos = this.computePos(jsEvent.target)
         this.$emit('eventclick', event, jsEvent, pos)
+      },
+      handleShowWarn(day, jsEvent){
+        debugger
+        this.warnDay = day
+        this.showWarn = true
+        this.warnPos = this.computePos(event.target)
+        this.warnPos.top -= 100
       }
     }
   }
@@ -296,19 +323,11 @@
 
         .rest-day{
           position: absolute;
-          background-color: lightgray;
+          background-color: #FAFAFA;
           top: 0; left: 0; width: 100%; height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+         padding: 4px;
           z-index: 10;
-        }
-
-        .day-warn{
-          position: absolute;
-          top: 4px;
-          left: 8px;
-          color: #FF5151;
+          box-sizing: border-box;
         }
 
         .day-number{
@@ -338,6 +357,15 @@
           min-height: 109px;
           overflow: hidden;
           text-overflow: ellipsis;
+          position: relative;
+
+
+          .day-warn{
+            position: absolute;
+            top: 4px;
+            left: 8px;
+            color: #FF5151;
+          }
 
           .day-number{
             text-align: right;
@@ -432,6 +460,10 @@
           }
         }
       }
+    }
+
+    .show-warn{
+
     }
   }
 }
