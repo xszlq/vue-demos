@@ -10,6 +10,8 @@
             :class="{'today' : day.isToday,
               'not-cur-month' : !day.isCurMonth}">
             <p class="day-number">{{day.monthDay}}</p>
+
+            <div class="rest-day" v-if="day.weekDay === 0 || day.weekDay === 6">休</div>
           </div>
         </div>
       </div>
@@ -21,7 +23,6 @@
             :class="{'today' : day.isToday,
               'not-cur-month' : !day.isCurMonth}" @click.stop="dayClick(day.date, $event)">
             <p class="day-number">{{day.monthDay}}</p>
-            <div class="rest-day" v-if="day.monthDay === 14">休息</div>
 
             <div class="event-box">
               <p class="event-item" v-for="event in day.events" v-show="event.cellIndex <= eventLimit"
@@ -276,11 +277,23 @@
       border-left:1px solid #e0e0e0;
       display: flex;
       .day-cell{
+        position: relative;
         flex:1;
         min-height: 100px;
         padding:4px;
         border-right:1px solid #e0e0e0;
         border-bottom:1px solid #e0e0e0;
+
+        .rest-day{
+          position: absolute;
+          background-color: lightgray;
+          top: 0; left: 0; width: 100%; height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10;
+        }
+
         .day-number{
           text-align: right;
         }
@@ -303,21 +316,11 @@
       .events-week{
         display: flex;
         .events-day{
-          position: relative;
           cursor: pointer;
           flex:1;
           min-height: 109px;
           overflow: hidden;
           text-overflow: ellipsis;
-
-          .rest-day{
-            position: absolute;
-            background-color: red;
-            top: 0; left: 0; width: 100%; height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          }
 
           .day-number{
             text-align: right;
