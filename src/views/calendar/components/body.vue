@@ -283,7 +283,6 @@
         this.$emit('eventclick', event, jsEvent, pos)
       },
       handleShowWarn(day, jsEvent){
-        debugger
         this.warnDay = day
         this.showWarn = true
         this.warnPos = this.computePos(event.target)
@@ -293,6 +292,15 @@
   }
 </script>
 <style lang="scss">
+  $colorOne : #FF545E;
+  $colorTwo : #FF8247;
+  $colorThree : #FFC900;
+  $colorFour : #47D5FF;
+  $colorFive : #4BD4A1;
+  $colorSix : #A46EFF;
+  $colorSeven : #0F62FE;
+  $fixWidth : 3px;
+
 .full-calendar-body{
   margin-top: 20px;
   .weeks{
@@ -390,19 +398,61 @@
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
-              &.is-start{
-                margin-left: 4px;
-                // border-top-left-radius:4px;
-                // border-bottom-left-radius:4px;
+              /*&.is-start{*/
+                /*margin-left: 4px;*/
+              /*}*/
+
+              &.one.is-start{
+                border-left: $fixWidth solid $colorOne;
               }
+              &.two.is-start{
+                border-left: $fixWidth solid $colorTwo;
+              }
+              &.three.is-start{
+                border-left: $fixWidth solid $colorThree;
+              }
+              &.four.is-start{
+                border-left: $fixWidth solid $colorFour;
+              }
+              &.five.is-start{
+                border-left: $fixWidth solid $colorFive;
+              }
+              &.six.is-start{
+                border-left: $fixWidth solid $colorSix;
+              }
+              &.seven.is-start{
+                border-left: $fixWidth solid $colorSeven;
+              }
+
               &.is-end{
                 margin-right: 4px;
-                // border-top-right-radius:4px;
-                // border-bottom-right-radius:4px;
               }
               &.is-opacity{
                 opacity: 0;
               }
+
+              &.one{
+                background-color: #FFDCDE; color:$colorOne;
+              }
+              &.two{
+                background-color: #FFE6D6; color: $colorTwo;
+              }
+              &.three{
+                background-color: #FFF9C4; color: $colorThree;
+              }
+              &.four{
+                background-color: #CCF3FF; color: $colorFour;
+              }
+              &.five{
+                background-color: #E6FFF6; color: $colorFive;
+              }
+              &.six{
+                background-color: #E7DAFF; color: $colorSix;
+              }
+              &.seven{
+                background-color: #EBF4FF; color: $colorSeven;
+              }
+
             }
             .more-link{
               cursor: pointer;
@@ -419,7 +469,7 @@
     .more-events{
       position:absolute;
       width: 150px;
-      z-index: 2;
+      z-index: 999;
       border:1px solid #eee;
       box-shadow: 0 2px 6px rgba(0,0,0,.15);
       .more-header{
