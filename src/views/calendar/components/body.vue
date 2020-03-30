@@ -11,6 +11,10 @@
               'not-cur-month' : !day.isCurMonth}">
             <p class="day-number">{{day.monthDay}}</p>
 
+            <div class="day-warn" v-if="day.monthDay === 10">
+              <button>warn</button>
+            </div>
+
             <div class="rest-day" v-if="day.weekDay === 0 || day.weekDay === 6">休</div>
           </div>
         </div>
@@ -30,7 +34,8 @@
                   'is-start'   : isStart(event.start, day.date),
                   'is-end'     : isEnd(event.end,day.date),
                   'is-opacity' : !event.isShow
-                  }]" 
+                  }]"
+                 :title="event.title"
                 @click="eventClick(event,$event)">
                 {{isBegin(event, day.date, day.weekDay)}}
               </p>
@@ -166,7 +171,11 @@
               isCurMonth : startDate.getMonth() == current.getMonth(),
               weekDay : perDay,
               date : new Date(startDate),
-              events : this.slotEvents(startDate)
+              events : this.slotEvents(startDate),
+              isRest: false,
+              warnData: {
+                type: 0, // 0 当日工时分配超过8小时 1 当日无任务安排
+              }
             })
 
             startDate.setDate(startDate.getDate() + 1)
@@ -231,6 +240,7 @@
         let events = day.events.filter(item =>{
           return item.isShow == true
         })
+
         this.$emit('moreclick', day.date, events, jsEvent)
       },
       computePos (target) {
@@ -292,6 +302,13 @@
           align-items: center;
           justify-content: center;
           z-index: 10;
+        }
+
+        .day-warn{
+          position: absolute;
+          top: 4px;
+          left: 8px;
+          color: #FF5151;
         }
 
         .day-number{

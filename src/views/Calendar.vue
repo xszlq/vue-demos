@@ -1,6 +1,6 @@
 <template>
     <div>
-        <full-calendar :events="fcEvents" lang="zh"/>
+        <full-calendar :events="fcEvents" lang="zh" @moreClick="handleMoreClick"/>
     </div>
 
 </template>
@@ -11,7 +11,7 @@
   // import  fullCalendar from 'vue-fullcalendar'
 
 
-  var demoEvents = [
+  let demoEvents = [
     {
       title : 'Sunny Out of Office',
       start : '2020-03-12',
@@ -43,6 +43,15 @@
     }
   ];
 
+  let restDay = [1585538968778, 1585628958778];
+
+  let warnList = [
+    {
+      type: 0,
+      date: 1585538968778,
+    }
+  ];
+
   export default {
     name: 'Calendar',
     components: {
@@ -53,6 +62,11 @@
         fcEvents : demoEvents
       }
     },
+    methods:{
+      handleMoreClick(){
+        // console.log('arguments:', arguments)
+      }
+    }
   }
 </script>
 
