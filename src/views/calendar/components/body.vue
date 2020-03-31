@@ -11,7 +11,7 @@
               'not-cur-month' : !day.isCurMonth}">
             <p class="day-number">{{day.monthDay}}</p>
 
-            <div class="rest-day" v-if="day.weekDay === 0 || day.weekDay === 6">
+            <div class="rest-day" v-if="day.isRest">
               <p class="day-number">{{day.monthDay}}</p>
             </div>
           </div>
@@ -26,8 +26,10 @@
               'not-cur-month' : !day.isCurMonth}" @click.stop="dayClick(day.date, $event)">
             <p class="day-number">{{day.monthDay}}</p>
 
-            <div class="day-warn" v-if="day.monthDay === 10">
-              <button @click="handleShowWarn(day, $event)">warn</button>
+            <div class="day-warn" v-if="day.hasWarn">
+              <svg style="width: 15px; height: 15px;"
+                   @click="handleShowWarn(day, $event)"
+                   t="1585637441659" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2370" width="200" height="200"><path d="M511.999 95.003c-230.524 0-418.076 187.552-418.075 418.077 0 230.527 187.552 418.077 418.075 418.077s418.077-187.55 418.077-418.077c0-230.525-187.552-418.077-418.077-418.077zM512 722.12c-28.86 0-52.26-23.399-52.26-52.263 0-28.858 23.399-52.257 52.26-52.257s52.26 23.399 52.26 52.257c0 28.863-23.399 52.263-52.26 52.263zM564.26 513.078c0 28.86-23.399 52.26-52.26 52.26s-52.26-23.399-52.26-52.26l0-156.775c0-28.86 23.399-52.26 52.26-52.26s52.26 23.399 52.26 52.26l0 156.775z" p-id="2371" fill="#FF5151"></path></svg>
             </div>
 
             <div class="event-box">
@@ -75,8 +77,9 @@
           <span class="close" @click.stop="showWarn = false">x</span>
         </div>
         <div class="more-body" style="height: 50px; background-color: white;">
-          <div>当日无任务安排</div>
+          <div class="warn-info">{{warnDay.warnType === 1 ? '当日分配工时超过8小时' : '当日无任务安排'}}</div>
           <button>调整工时</button>
+          <button>删除异常</button>
         </div>
       </div>
 
@@ -99,7 +102,7 @@
         default : []
       },
       monthNames  : {},
-      firstDay    : {}
+      firstDay    : {},
     },
     created () {
       this.events.forEach((item, index) => {
@@ -122,7 +125,9 @@
           left : 0
         },
         selectDay : {},
-        warnDay: {},
+        warnDay: {
+
+        },
         warnPos: {
           top: 0,
           left : 0,
@@ -180,11 +185,23 @@
         startDate.setDate(startDate.getDate() + diff)
         let calendar = []
 
+        let {calendarList, abnormalList} = this.$attrs;
+
+        abnormalList = abnormalList || [];
+        let abnormalIndex = 0;
+
         for(let perWeek = 0 ; perWeek < 6 ; perWeek++) {
 
           let week = []
 
           for(let perDay = 0 ; perDay < 7 ; perDay++) {
+            let dayIndex = perDay + perWeek*7, hasWarn = false, abnormalInfo={};
+
+            if(abnormalList[abnormalIndex] && abnormalList[abnormalIndex].numberLocation === dayIndex+1){
+              hasWarn = true;
+              abnormalInfo = abnormalList[abnormalIndex++];
+            }
+
             week.push({
               monthDay : startDate.getDate(),
               isToday : now.toDateString() == startDate.toDateString(),
@@ -192,10 +209,10 @@
               weekDay : perDay,
               date : new Date(startDate),
               events : this.slotEvents(startDate),
-              isRest: false,
-              warnData: {
-                type: 0, // 0 当日工时分配超过8小时 1 当日无任务安排
-              }
+              // 节假日、周末
+              isRest:calendarList[dayIndex] && calendarList[dayIndex].workdayType === 2,
+              hasWarn,
+              warnType: abnormalInfo.abnormalType
             })
 
             startDate.setDate(startDate.getDate() + 1)
@@ -371,7 +388,7 @@
           .day-warn{
             position: absolute;
             top: 4px;
-            left: 8px;
+            right: 21px;
             color: #FF5151;
           }
 
@@ -473,11 +490,13 @@
       border:1px solid #eee;
       box-shadow: 0 2px 6px rgba(0,0,0,.15);
       .more-header{
-        background-color:#eee;
+        background-color: white;
         padding:5px;
         display: flex;
         align-items : center;
         font-size: 14px;
+        color: #333333;
+        font-weight: 600;
         .title{
           flex:1;
         }
@@ -490,6 +509,13 @@
       .more-body{
         height: 140px;
         overflow: hidden;
+        background-color: white;
+
+        .warn-info{
+          font-size: 12px;
+          color: #333333;
+        }
+
         .body-list{
           height: 120px;
           padding:5px;

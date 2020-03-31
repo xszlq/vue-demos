@@ -19,7 +19,7 @@
     </fc-header>
     <!-- body display date day and events -->
     <fc-body :current-date="currentDate" :events="events" :month-names="monthNames" 
-      :week-names="weekNames" :first-day="firstDay"
+      :week-names="weekNames" :first-day="firstDay" :calendarList="$attrs.calendarList" :abnormalList="$attrs.abnormalList"
       @eventclick="emitEventClick" @dayclick="emitDayClick"
       @moreclick="emitMoreClick">
       <div slot="body-card">
@@ -45,7 +45,7 @@
         default : 'en'
       },
       firstDay : {
-        type : Number | String,
+        type : [Number ,String],
         validator (val) {
           let res = parseInt(val)
           return res >= 0 && res <= 6
