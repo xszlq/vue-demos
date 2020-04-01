@@ -24,5 +24,11 @@ export default new Router({
       component: () => import('./views/Calendar.vue')
     },
 
+    {
+      path: '/circle',
+      name: 'circle',
+      component: () => import('./views/Circle.vue')
+    },
+
   ]
 })
